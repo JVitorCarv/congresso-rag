@@ -1,0 +1,16 @@
+[project]
+name = "congresso-rag"
+version = "0.1.0"
+description = "Semantic search engine around journals from the Brazilian National Congress"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=6.29.5",
+    "langchain-community>=0.3.24",
+    "langchain-core>=0.3.64",
+    "langchain-openai>=0.3.21",
+    "openai>=1.84.0",
+    "pypdf>=5.6.0",
+    "streamlit>=1.45.1",
+    "watchdog>=6.0.0",
+]
