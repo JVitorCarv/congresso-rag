@@ -8,7 +8,18 @@ import os
 
 
 class TextPreprocessor:
+    """
+    A class for preprocessing text documents, including loading, splitting, and embedding.
+    """
+
     def __init__(self, uploaded_file, embedding_model: str = "text-embedding-3-small"):
+        """
+        Initializes the TextPreprocessor with a file, and embedding model.
+
+        Args:
+            uploaded_file: The uploaded file to process.
+            embedding_model (str, optional): The embedding model to use. Defaults to "text-embedding-3-small".
+        """
         self.file_path = os.path.join(os.getcwd(), "data", f"temp_{uploaded_file.name}")
 
         with open(self.file_path, "wb") as f:
@@ -20,11 +31,26 @@ class TextPreprocessor:
         self.vector_store = None
 
     def load_file(self) -> List[Document]:
+        """
+        Loads the file into a list of Document objects.
+
+        Returns:
+            List[Document]: A list of Document objects representing the loaded file.
+        """
         loader = PyPDFLoader(self.file_path)
         self.docs = loader.load()
         return self.docs
 
     def split_text(self) -> List[Document]:
+        """
+        Splits the loaded documents into smaller chunks.
+
+        Raises:
+            ValueError: If self.docs is not a valid value (None).
+
+        Returns:
+            List[Document]: A list of Document objects representing the split text.
+        """
         if not self.docs:
             raise ValueError("self.docs is not a valid value")
 
@@ -33,9 +59,19 @@ class TextPreprocessor:
         return self.splits
 
     def load_embeddings(self) -> InMemoryVectorStore:
+        """
+        Loads the embeddings for the split text into an InMemoryVectorStore.
+
+        Raises:
+            ValueError: If self.embedding_model is not a valid value (None).
+            ValueError: If self.splits is not a valid value (None).
+
+        Returns:
+            InMemoryVectorStore: An InMemoryVectorStore containing the embeddings for the split text.
+        """
         if not self.embedding_model:
             raise ValueError("self.embedding_model is not a valid value")
-        elif self.splits:
+        if not self.splits:
             raise ValueError("self.splits is not a valid value")
 
         embeddings = OpenAIEmbeddings(model=self.embedding_model)

@@ -26,6 +26,12 @@ OPENAI_API_KEY=YOUR_API_KEY_HERE
 
 The variable should be automatically loaded by the extension.
 
+To run the Streamlit app, use the following command:
+
+```
+streamlit run main.py
+```
+
 ## More Information
 
 For more details, here's the related Medium post I wrote: [Keeping Up With Congress With Retrieval-Augmented Generation (RAG)](https://medium.com/@mateusriff/keeping-up-with-congress-with-retrieval-augmented-generation-rag-513387fa45b9)
