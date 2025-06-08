@@ -4,6 +4,24 @@ from util.text_preprocessor import TextPreprocessor
 import os
 
 
+# This caching layer will avoid the document being re-processed
+# after each query.
+@st.cache_resource
+def get_text_preprocessor(uploaded_file):
+    return TextPreprocessor(uploaded_file)
+
+
+@st.cache_data
+def load_pdf_file(_preprocessor):
+    return _preprocessor.load_file()
+
+
+@st.cache_resource
+def get_vector_store(_preprocessor):
+    _preprocessor.split_text()
+    return _preprocessor.load_embeddings()
+
+
 def main():
     st.title("Congresso RAG")
 
@@ -11,16 +29,17 @@ def main():
     if not uploaded_file:
         return
 
-    query = st.text_input("Digite sua pergunta:")
+    preprocessor = get_text_preprocessor(uploaded_file)
 
     with st.spinner("Carregando documento..."):
-        text_preprocessor = TextPreprocessor(uploaded_file)
-        docs = text_preprocessor.load_file()
+        docs = load_pdf_file(preprocessor)
         st.success(f"{len(docs)} páginas do PDF foram carregadas.")
 
     with st.spinner("Carregando embeddings..."):
-        vector_store = text_preprocessor.load_embeddings()
+        vector_store = get_vector_store(preprocessor)
     st.success("Documento indexado.")
+
+    query = st.text_input("Digite sua pergunta:")
 
     if not query:
         return

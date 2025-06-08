@@ -38,7 +38,7 @@ class RAG:
             str: A string containing the context for the query.
         """
         results = self.vector_store.similarity_search(query)
-        return "\n\n".join([res for res in results])
+        return "\n\n".join([res.page_content for res in results])
 
     def _load_instructions(self, instructions_path: str) -> str:
         """
@@ -80,5 +80,5 @@ class RAG:
         return response
 
 
-if __name__ is "__main__":
+if __name__ == "__main__":
     pass
