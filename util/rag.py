@@ -1,5 +1,9 @@
+import os
 from langchain_core.vectorstores import InMemoryVectorStore
 from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class RAG:
@@ -21,7 +25,7 @@ class RAG:
             instructions_path (str): The path to the instructions file.
             llm_model (str, optional): The language model to use for generation. Defaults to "gpt-4.1-nano".
         """
-        self.client = OpenAI()
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.instructions = self._load_instructions(instructions_path)
         self.vector_store = vector_store
         self.llm_model = llm_model
